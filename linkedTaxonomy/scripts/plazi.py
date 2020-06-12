@@ -126,7 +126,7 @@ def get_treatment_information(treatment):
                 print('-----------------')
                 print(str(r2[0]))
 
-                type_string = str(r2[0])
+                type_string = r2[0].toPython()
 
         return publications, figures, type_string
 
