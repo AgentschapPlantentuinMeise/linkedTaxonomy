@@ -2,6 +2,7 @@ from SPARQLWrapper import SPARQLWrapper, JSON
 import warnings
 warnings.filterwarnings('ignore')
 from rdflib import *
+from urllib.request import urlopen
 from urllib.error import HTTPError
 
 plazi_base_url = 'http://tb.plazi.org/GgServer/rdf/'
@@ -133,3 +134,8 @@ def get_treatment_information(treatment):
 
         print('treatment gave an HTTP error')
         return None
+
+if __name__ == "__main__":
+    import sys
+    output = get_treatments(sys.argv[1],sys.argv[2])
+    print(output)
