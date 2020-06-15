@@ -75,6 +75,10 @@ def get_treatment_information(treatment):
 
         publications = []
 
+        figures = []
+
+        type_string = []
+
         if pub_print:
 
             for item in publication_query:
@@ -119,23 +123,26 @@ def get_treatment_information(treatment):
              <{0}> spm:hasContent ?b.
              }}""".format(r[0]))
 
-        for r2 in q2res:
-            if str(r2).find('Type') != -1:
-                print('=================')
-                print('Type information:')
-                print('-----------------')
-                print(str(r2[0]))
+            for r2 in q2res:
+                if str(r2).lower().find('type') != -1:
+                    print('=================')
+                    print('Type information:')
+                    print('-----------------')
+                    print(str(r2[0]))
 
-                type_string = r2[0].toPython()
+                    type_string.append(r2[0].toPython())
 
         return publications, figures, type_string
 
     except HTTPError:
 
         print('treatment gave an HTTP error')
-        return None
+        return None,None,None
 
 if __name__ == "__main__":
     import sys
     output = get_treatments(sys.argv[1],sys.argv[2])
-    print(output)
+    for treatment in output:
+        print(treatment)
+        p,f,t = get_treatment_information(treatment)
+        print(t)

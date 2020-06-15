@@ -1,5 +1,6 @@
 import requests
 import json
+import dateutil.parser as dparser
 
 IH_codes = []
 herbaria = requests.get('http://sweetgum.nybg.org/science/api/v1/institutions')
@@ -15,6 +16,13 @@ else:
 def find_collections(type_string):
 
     collections = []
+
+    date = None
+    try:
+        date = dparser.parse(type_string,fuzzy=True)
+    except ValueError:
+        date = None
+
     
     type_string = type_string.split()
     for substring in type_string:
@@ -23,4 +31,16 @@ def find_collections(type_string):
             collections.append(substring)
 
 
-    return collections
+    return date, collections
+
+def types_mentionned(string):
+
+    types = ['holotype', 'isotype', 'paratype', 'syntype', 'lectotype', 'isolectotype', 'neotype', 'isoneotype', 'epitype']
+    
+    result = []
+
+    for tstr in types:
+        if string.lower().find(tstr) != -1:
+            result.append(tstr)
+
+    return result

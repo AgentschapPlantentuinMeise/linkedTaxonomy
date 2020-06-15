@@ -6,6 +6,9 @@ from flask import render_template
 from flask import Flask, url_for
 from markupsafe import escape
 import wikidata
+import plazi
+import lt_html
+import html
 
 app = Flask(__name__)
 
@@ -17,7 +20,13 @@ def home(table=None):
 
 @app.route('/<genus>/<species>')
 def taxon(genus=None, species=None):
-    return render_template('taxon.html', genus=genus, species=species)
+    treatments = plazi.get_treatments(genus,species)
+    images = []
+    for treatment in treatments:
+        p,f,t = plazi.get_treatment_information(treatment)
+        images.extend(f)
+    image_list = lt_html.include_images(images)
+    return render_template('taxon.html', genus=genus, species=species, image_list=image_list)
 
 
 if __name__ == '__main__':
