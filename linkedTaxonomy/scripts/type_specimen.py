@@ -89,7 +89,7 @@ def get_synonyms(genus,species):
 
 if __name__ == "__main__":
     import sys
-    columns = ['key','scientificName']
+    columns = ['key','scientificName', 'taxonRank']
     taxon = get_taxon_key(sys.argv[1])
     types = get_types(taxon['taxonKey'],sys.argv[2])
 

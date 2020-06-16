@@ -10,6 +10,8 @@ import plazi
 import lt_html
 import html
 import protologue
+import type_specimen
+import index
 
 app = Flask(__name__)
 
@@ -21,6 +23,23 @@ def home(table=None):
 
 @app.route('/<genus>/<species>')
 def taxon(genus=None, species=None):
+
+    # list of types to consider
+    types = types_list = ['Holotype', 'Isotype', 
+            'Paratype', 'Syntype', 'Lectotype', 'Isolectotype', 
+            'Neotype', 'Isoneotype', 'Epitype', 'Type']
+    
+    # get information from GBIF
+    taxonNameFull = genus + ' ' + species
+    print('Debug info')
+    print(taxonNameFull)
+    taxon = type_specimen.get_taxon_key(taxonNameFull)
+    print(taxon)
+    holotypes = type_specimen.get_types(taxon['taxonKey'],'Holotype')
+    print(holotypes)
+    
+    
+    # get information from PLAZI
     treatments = plazi.get_treatments(genus,species)
     images = []
     publications = []
@@ -28,9 +47,13 @@ def taxon(genus=None, species=None):
 
     for treatment in treatments:
         p,f,t = plazi.get_treatment_information(treatment)
-        images.extend(f)
-        publications.extend(p)
-        type_information.extend(t)
+        if f is not None:
+            images.extend(f)
+        if p is not None:
+            publications.extend(p)
+        if t is not None:
+            type_information.extend(t)
+
 
     image_list = lt_html.include_images(images)
     for item in type_information:

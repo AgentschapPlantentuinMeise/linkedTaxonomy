@@ -44,3 +44,10 @@ def types_mentionned(string):
             result.append(tstr)
 
     return result
+
+if __name__ == '__main__':
+    import sys
+    date, collections = find_collections(sys.argv[1])
+    tm = types_mentionned(sys.argv[1])
+
+    print(tm)
