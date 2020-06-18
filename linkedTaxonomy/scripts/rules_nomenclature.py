@@ -13,8 +13,12 @@ def execute(genus,species):
 
     taxon = type_specimen.get_taxon_key(taxonNameFull)
 
-    for item in types:
+    types_list = {}
 
+    for item in types:
+        types_list[item] = type_specimen.get_types(taxon['taxonKey'],item)
+
+    treatments = plazi.get_treatments(genus,species)
 
 
     result = {}
