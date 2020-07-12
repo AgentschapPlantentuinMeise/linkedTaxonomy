@@ -51,7 +51,6 @@ In order to find the holding collecion of the type specimen, Index Herbariorum n
     |-- templates
         |-- home.html
         |-- taxon.html
- ´´´
-
+ ```
 ## References
 To be added
