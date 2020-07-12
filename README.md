@@ -28,6 +28,27 @@ In order to find the holding collecion of the type specimen, Index Herbariorum n
 * GrSciColl recommendations
 
 ## Structure of the code
+|-- requirements.txt
+|-- LICENSE.txt
+|-- README.md
+|-- notebooks
+    |-- Name_information_types.ipynb
+    |-- Types_GBIFonly.ipynb
+    |-- Wikidata_taxon.ipynb
+|-- linkedTaxonomy
+    |-- app.py
+    |-- scripts
+        |-- bhl_results.py
+        |-- index.py
+        |-- lt_html.py
+        |-- plazi.py
+        |-- protologue.py
+        |-- rules_nomenclature.py
+        |-- type_specimen.py
+        |-- wikidata.py
+    |-- templates
+        |-- home.html
+        |-- taxon.html
 
 ## References
 To be added
