@@ -1,5 +1,15 @@
+"""
+protologue.py
+
+This part of the code is parsing the information in the treatments to find date of the specimen, the types mentioned in the treatment and the collections that contain the specimen
+
+The date returned by the script is possibly a list of possible dates. Extra logic needs to be put in place to make sure that unrealistic dates are rejected.
+
+"""
+
 import requests
 import json
+import datefinder
 import dateutil.parser as dparser
 
 IH_codes = []
@@ -15,11 +25,15 @@ else:
 
 def find_collections(type_string):
 
+    # TO DO: improve the parsing of the type string
+    # some parts of the string are recognized as collection
+    # codes, while this shouldn´t be the case
+
     collections = []
 
     date = None
     try:
-        date = dparser.parse(type_string,fuzzy=True)
+        date = list(datefinder.find_dates(type_string))
     except ValueError:
         date = None
 
@@ -50,4 +64,5 @@ if __name__ == '__main__':
     date, collections = find_collections(sys.argv[1])
     tm = types_mentionned(sys.argv[1])
 
+    print(date)
     print(tm)

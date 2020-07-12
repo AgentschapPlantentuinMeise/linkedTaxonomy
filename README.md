@@ -27,7 +27,13 @@ In order to reconstruct the information on a scientific name, we use the differe
 In order to find the holding collecion of the type specimen, Index Herbariorum needs to be used. The letter code is unique for herbaria, but not for collections
 * GrSciColl recommendations
 
-## Structure of the code
+## Structure of the repository
+
+The code is written in Python 3. Please use version 3.6 or higher.
+
+The repository contains two main folders. The 'notebooks' folder is a selection of Jupyter notebooks that were used to explore the possibilities with the different APIs and how this information can be extracted.
+
+The real code is contained in the 'linkedTaxonomy' folder. This folder contains a python Flask application. The application takes Genus and epithet as input to run the checks on nomenclature and build the information known on this taxon. A timeline is built to show the history of this taxon.
 
 ```bash
 |-- requirements.txt
@@ -52,5 +58,8 @@ In order to find the holding collecion of the type specimen, Index Herbariorum n
         |-- home.html
         |-- taxon.html
  ```
+
+In order to start the application, run `app.py`. This will start a development server running on your localhost. In order to deploy this application, you should setup a WSGI interface and a server (e.g. Apache)
+
 ## References
 To be added
