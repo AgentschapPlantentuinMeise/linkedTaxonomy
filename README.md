@@ -28,6 +28,8 @@ In order to find the holding collecion of the type specimen, Index Herbariorum n
 * GrSciColl recommendations
 
 ## Structure of the code
+
+```bash
 |-- requirements.txt
 |-- LICENSE.txt
 |-- README.md
@@ -49,6 +51,7 @@ In order to find the holding collecion of the type specimen, Index Herbariorum n
     |-- templates
         |-- home.html
         |-- taxon.html
+ ´´´
 
 ## References
 To be added
