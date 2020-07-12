@@ -40,6 +40,8 @@ def taxon(genus=None, species=None):
     
     
     # get information from PLAZI
+    # TO DO: this part needs to be repeated for all of the 
+    # synonyms to reconstruct to whole picture
     treatments = plazi.get_treatments(genus,species)
     images = []
     publications = []
