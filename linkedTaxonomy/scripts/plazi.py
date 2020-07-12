@@ -1,3 +1,16 @@
+"""
+plazi.py
+
+This script is getting the information from the taxonomic treatments.
+
+Search on Genus + species --> this will only give results of the treatments where the name is given like this. Synonyms are not showing up in this case.
+
+the authority is contained in dwc:authority.
+
+TO BE ADDED: I need to loop over all the synonyms in order to find all the relevant treatments!
+
+"""
+
 from SPARQLWrapper import SPARQLWrapper, JSON
 import warnings
 warnings.filterwarnings('ignore')
