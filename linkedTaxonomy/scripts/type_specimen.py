@@ -63,6 +63,26 @@ def get_types(key,type_status):
   else:
     return None
 
+def get_related_specimen(**kwargs):
+    """
+    input parameters expected:
+    date
+    genusKey or speciesKey
+    recordedBy
+    """
+    query = {}
+    for k,v in kwargs.items():
+        query[k] = v
+    query['limit'] = 10
+
+    related = requests.get(gbif_occurence, params=query)
+    if related.status_code == 200:
+        related_specimen = json.loads(related.text)
+
+    ## TO DO: finish this function
+
+
+
 def get_synonyms(genus,species):
 
     p_query = {Name.genus : genus, Name.species : species}

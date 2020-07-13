@@ -3,22 +3,34 @@
 All known species receive a name. 
 
 When a name is given to a specimen...
+
 ## Methodology
 ### Getting all the building blocks
 In order to reconstruct the information on a scientific name, we use the different available APSs
 * GBIF API: type specimens and related specimens
 * PLAZI SPARQL endpoint: retreive information on the scientific name out of the protologue, get the collection identifiers
 * Index Herbariorum: from the collection identifiers, look for the collections mentioned in the protologue
+* IPNI/POWO: look for synonyms
+
 ### Workflow
+![Design diagram](./linkedTaxonomy.jpg)
+
 * based on the taxon name, look for the taxon key in GBIF
 * search for all type specimen that belong to the same taxon
 * look for that taxon on Plazi and find the treatments 
 * parse the type information in the treatment + year/date of treatment
 * apply rules of nomenclature
+TO DO: describe time evolution. This should be taken in consideration, since names are given at different times.
 
 ### Rules of nomenclature
 * For each name only one holotype
+* TO DO: if date of treatment known: check date specimen (only possible with defining treatments)
 * isotypes same date
+* check dates of the paratypes (less than or equal)
+* if there is a lectotype: some types should not exist
+* lectotype should be existing at the time of first description (rule to be defined)
+* look for related specimen. 
+
 
 ### Visualisation
 
