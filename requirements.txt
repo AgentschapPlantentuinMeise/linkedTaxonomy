@@ -1,3 +1,4 @@
+datefinder==0.7.1
 Flask==1.1.2
 Flask-Bootstrap==3.3.7.1
 flask-mwoauth==0.4.82

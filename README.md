@@ -1,12 +1,21 @@
 # Linking nomenclature to specimens
-## Introduction
-All known species receive a name. 
+Maarten Trekels - Meise Botanic Garden
 
-When a name is given to a specimen...
+## Introduction
+When an organism is described for the first time, it will receive a scientific name. However, scientific knowledge is evolving continuously. Organisms with different names turn out to be the same and are merged into one species. Others turn out to be more diverse than first thought and are split into different species. When all of this pieces of the puzzle are put together, we speak about a taxon.
+
+It is important to notice that this is a dynamic puzzle. Every day science finds new insights in the way nature works. How we understand a taxon today can be different from what it was yesterday and how it will be tomorrow. 
+
+Crucial in the concept of a taxon are the different specimens that served as type material in the description of a scientific name. In order to have a full overview on the taxon, it is important to consider all these specimens in relation with the treatment in which they are described.
+
+When specimens are added to GBIF, it is possible to indicate whether a specimen is a type specimen or not. Sometimes this information is incomplete (e.g. not specified what kind of type), missing or even wrong. Therefor, we implemented a number of checks on the rules of nomenclature in order to indicate possible issues with the specimens.
+
+In this package of scripts, we focus on botanical specimens and treatments. However the principles can be expanded to any kind of organism. 
+
 
 ## Methodology
 ### Getting all the building blocks
-In order to reconstruct the information on a scientific name, we use the different available APSs
+In order to reconstruct the information on a scientific name, we use the different available APIs
 * GBIF API: type specimens and related specimens
 * PLAZI SPARQL endpoint: retreive information on the scientific name out of the protologue, get the collection identifiers
 * Index Herbariorum: from the collection identifiers, look for the collections mentioned in the protologue

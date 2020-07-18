@@ -73,15 +73,28 @@ def get_related_specimen(**kwargs):
     query = {}
     for k,v in kwargs.items():
         query[k] = v
-    query['limit'] = 10
+    query['limit'] = 20
 
     related = requests.get(gbif_occurence, params=query)
     if related.status_code == 200:
         related_specimen = json.loads(related.text)
+        endOfRecords = related_specimen['endOfRecords']
+        df = pd.DataFrame(related_specimen['results'])
+        iteration = 1
+        while not endOfRecords:
+            query['offset'] =  iteration*20
+            related = requests.get(gbif_occurence, params=query)
+            related_specimen = json.loads(related.text)
+            endOfRecords = related_specimen['endOfRecords']
+            dfe = pd.DataFrame(related_specimen['results'])
+            df = df.append(dfe, ignore_index=True)
+            iteration += 1
+  
+        return df
 
-    ## TO DO: finish this function
-
-
+    else:
+        return None
+  
 
 def get_synonyms(genus,species):
 
