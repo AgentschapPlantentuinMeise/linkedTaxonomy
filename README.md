@@ -32,6 +32,9 @@ In order to reconstruct the information on a scientific name, we use the differe
 TO DO: describe time evolution. This should be taken in consideration, since names are given at different times.
 
 ### Rules of nomenclature
+The rules of nomenclature are defined in `scripts\rules_nomenclature.py`. In this version of the application, the focus is solely on botany. This is the first set of functions to be adapted when expanding to other branches of biology.
+
+The current rules that are implemented are:
 * For each name only one holotype
 * TO DO: if date of treatment known: check date specimen (only possible with defining treatments)
 * isotypes same date
@@ -42,6 +45,7 @@ TO DO: describe time evolution. This should be taken in consideration, since nam
 
 
 ### Visualisation
+The set of scripts that implement the functionalities are serving a Python Flask web application. The only parameters that need to be given to the application are the Genus and epithet. A html page is generated from the different scripts. The specimens and treatments are shown (with pictures if available). As well as a table with the checks on nomenclaturial rules.
 
 ## Recommendations
 ### Unique identifiers for collections
