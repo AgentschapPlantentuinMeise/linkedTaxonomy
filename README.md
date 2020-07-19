@@ -24,9 +24,16 @@ In order to reconstruct the information on a scientific name, we use the differe
 ### Workflow
 ![Design diagram](./linkedTaxonomy.jpg)
 
-* based on the taxon name, look for the taxon key in GBIF
-* search for all type specimen that belong to the same taxon
-* look for that taxon on Plazi and find the treatments 
+The application expects as an input the taxon name (genus + epithet). Based on those two parameters, a number of steps gather the information:
+
+### Step 1: search for the type specimen in GBIF
+
+Using the genus and epithet, the application looks for the taxon key using the GBIF API (GBIF taxonomic backbone). Based on the taxon key, all type specimen with that key are retreived. Since the first version of this application is focussing on the botanical use-case, only 'Holotype', 'Isotype', 'Paratype', 'Syntype', 'Lectotype', 'Isolectotype', 'Neotype', 'Isoneotype', 'Epitype' and 'Type' are considered as type status.
+
+### Step 2: get information from the treatments
+
+
+
 * parse the type information in the treatment + year/date of treatment
 * apply rules of nomenclature
 TO DO: describe time evolution. This should be taken in consideration, since names are given at different times.
