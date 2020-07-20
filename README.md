@@ -26,15 +26,19 @@ In order to reconstruct the information on a scientific name, we use the differe
 
 The application expects as an input the taxon name (genus + epithet). Based on those two parameters, a number of steps gather the information:
 
-### Step 1: search for the type specimen in GBIF
+#### Step 1: search for the type specimen in GBIF
 
 Using the genus and epithet, the application looks for the taxon key using the GBIF API (GBIF taxonomic backbone). Based on the taxon key, all type specimen with that key are retreived. Since the first version of this application is focussing on the botanical use-case, only 'Holotype', 'Isotype', 'Paratype', 'Syntype', 'Lectotype', 'Isolectotype', 'Neotype', 'Isoneotype', 'Epitype' and 'Type' are considered as type status.
 
-### Step 2: get information from the treatments
+By plotting the holotype specimens on a timeline, it is possible to display the time evolution of the species naming.
 
+#### Step 2: get information from the treatments
 
+The SPQL endpoint of the Plazi treatment bank allows to search on dwc:genus and dwc:species (i.e. the epithet). As a result from the query, the defining and augmenting treatments can be retrieved. Using the persistent identifier of the treatment, a request can be performed to get the content of the treatment.
+From this, the date of publication can be retrieved. By parsing the paragraph of the treatment that refers to the type specimens, the holding collections can be found (using the Index Herbariorum API).
 
-* parse the type information in the treatment + year/date of treatment
+#### Step 3: nomenclatural rules
+
 * apply rules of nomenclature
 TO DO: describe time evolution. This should be taken in consideration, since names are given at different times.
 
