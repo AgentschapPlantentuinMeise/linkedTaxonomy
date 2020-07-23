@@ -6,6 +6,11 @@ import pykew.powo as powo
 from pykew.powo_terms import Name
 import pykew.ipni as ipni
 
+import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib.dates as mdates
+from datetime import datetime
+
 
 # Base urls
 gbif_base_url = 'https://api.gbif.org/v1/'
@@ -63,6 +68,65 @@ def get_types(key,type_status):
   else:
     return None
 
+def plot_timeline(types):
+
+    # This function is expecting a dataframe as an input
+    try:
+           
+        # create a timeline
+        # first drop the nan in eventdate
+        types = types[types['eventDate'].notna()]
+            
+        names = types['scientificName'].tolist()
+        dates = [datetime.strptime(d, "%Y-%m-%dT%H:%M:%S") for d in types.eventDate]
+            
+        # Choose some nice levels
+        levels = np.tile([-5, 5, -3, 3, -1, 1],
+               int(np.ceil(len(dates)/6)))[:len(dates)]
+
+
+        # Create figure and plot a stem plot with the date
+        fig, ax = plt.subplots(figsize=(8.8, 4), constrained_layout=True)
+        ax.set(title="Specimen eventDates")
+
+        markerline, stemline, baseline = ax.stem(dates, levels,
+                                       linefmt="C3-", basefmt="k-",
+                                       use_line_collection=True)
+
+
+        plt.setp(markerline, mec="k", mfc="w", zorder=3)
+
+        # Shift the markers to the baseline by replacing the y-data by zeros.
+        markerline.set_ydata(np.zeros(len(dates)))
+
+        # annotate lines
+        vert = np.array(['top', 'bottom'])[(levels > 0).astype(int)]
+        for d, l, r, va in zip(dates, levels, names, vert):
+            ax.annotate(r, xy=(d, l), xytext=(-3, np.sign(l)*3),
+            textcoords="offset points", va=va, ha="right")
+
+        # format xaxis with 62 month intervals
+        ax.get_xaxis().set_major_locator(mdates.MonthLocator(interval=63))
+        ax.get_xaxis().set_major_formatter(mdates.DateFormatter("%b %Y"))
+        plt.setp(ax.get_xticklabels(), rotation=30, ha="right")
+
+        # remove y axis and spines
+        ax.get_yaxis().set_visible(False)
+
+        for spine in ["left", "top", "right"]:
+            ax.spines[spine].set_visible(False)
+
+        ax.margins(y=0.1)
+
+        return plt
+
+
+    except KeyError:
+        
+        return None
+
+
+
 def get_related_specimen(**kwargs):
     """
     input parameters expected:
@@ -105,9 +169,12 @@ def get_synonyms(genus,species):
 
     results = ipni.search(p_query)
     spec = []
-    for r in results:
-        if r['rank'] == 'spec.':
-            spec.append(r)
+    try:
+        for r in results:
+            if r['rank'] == 'spec.':
+                spec.append(r)
+    except AttributeError:
+        pass
 
 
     for s in spec:

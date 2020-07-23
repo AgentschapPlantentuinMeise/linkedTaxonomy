@@ -62,6 +62,8 @@ The set of scripts that implement the functionalities are serving a Python Flask
 ### Unique identifiers for collections
 In order to find the holding collecion of the type specimen, Index Herbariorum needs to be used. The letter code is unique for herbaria, but not for collections
 * GrSciColl recommendations
+### Special cases discovered
+When testing the scripts, a special case was discovered. For 'Fallopia japonica' and 'Reynoutria japonica' (synonyms), the `genusKey` and `speciesKey` are the same, but on GBIF they seem to have a different `taxonKey`. This case is not catched by the application.
 
 ## Structure of the repository
 
@@ -96,6 +98,8 @@ The real code is contained in the 'linkedTaxonomy' folder. This folder contains 
  ```
 
 In order to start the application, run `app.py`. This will start a development server running on your localhost. In order to deploy this application, you should setup a WSGI interface and a server (e.g. Apache)
+
+TO DO: add matplotlib to the requirements
 
 ## References
 To be added

@@ -36,6 +36,8 @@ def find_collections(type_string):
         date = list(datefinder.find_dates(type_string))
     except ValueError:
         date = None
+    except TypeError:
+        date = None
 
     
     type_string = type_string.split()

@@ -19,7 +19,7 @@ app = Flask(__name__)
 def home(table=None):
     df = wikidata.list_wd()
     print(df.to_html(classes='data', header='true', max_rows=10))
-    return render_template('home.html', tables=[df.to_html(classes='data', header='true')])
+    return render_template('home.html', tables=[df.to_html(classes='data', header='true', index='false')])
 
 @app.route('/<genus>/<species>')
 def taxon(genus=None, species=None):
@@ -35,14 +35,32 @@ def taxon(genus=None, species=None):
     print(taxonNameFull)
     taxon = type_specimen.get_taxon_key(taxonNameFull)
     print(taxon)
-    holotypes = type_specimen.get_types(taxon['taxonKey'],'Holotype')
-    print(holotypes)
+    try:
+        holotypes = type_specimen.get_types(taxon['taxonKey'],'Holotype')
+        print(holotypes)
+    except TypeError:
+        holotypes = None
+        print('No Holotype found')
+
+    # get synonyms
+    synonyms = type_specimen.get_synonyms(genus,species)
     
     
     # get information from PLAZI
-    # TO DO: this part needs to be repeated for all of the 
-    # synonyms to reconstruct to whole picture
     treatments = plazi.get_treatments(genus,species)
+
+    if synonyms is not None:
+        for synonym in synonyms:
+            genus_syn = synonym['name'].split(' ')[0]
+            species_syn = synonym['name'].split(' ')[1]
+            treatments_syn = plazi.get_treatments(genus_syn,species_syn)
+            for st in treatments_syn:
+                treatments.append(st)
+
+    # Only use unique treatments
+    treatments = set(treatments)
+
+
     images = []
     publications = []
     type_information = []
