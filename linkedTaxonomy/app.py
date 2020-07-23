@@ -19,7 +19,7 @@ app = Flask(__name__)
 def home(table=None):
     df = wikidata.list_wd()
     print(df.to_html(classes='data', header='true', max_rows=10))
-    return render_template('home.html', tables=[df.to_html(classes='data', header='true', index='false')])
+    return render_template('home.html', tables=[df.to_html(classes='data', header=True, index=False)])
 
 @app.route('/<genus>/<species>')
 def taxon(genus=None, species=None):
