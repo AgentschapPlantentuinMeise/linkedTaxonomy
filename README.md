@@ -1,4 +1,4 @@
-# Linking nomenclature to specimens
+# Linking nomenclature to type specimens
 Maarten Trekels - Meise Botanic Garden
 
 ## Introduction
