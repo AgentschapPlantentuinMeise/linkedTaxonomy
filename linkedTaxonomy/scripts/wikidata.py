@@ -3,6 +3,13 @@ import json
 import pandas as pd
 from pandas.io.json import json_normalize
 
+def make_clickable(name):
+    name1 = name.replace(' ','/')
+    url = '<a target="_blank" href="/{0}">{1}</a>'.format(name1,name)
+
+    return url
+
+
 def list_wd():
 
     wd_endpoint = 'https://query.wikidata.org/sparql'
@@ -26,9 +33,13 @@ def list_wd():
             for c in cols:
                 item.append(row.get(c, {}).get('value'))
             out.append(item)
-        return pd.DataFrame(out,columns=cols)
+        df = pd.DataFrame(out,columns=cols)
+        df['itemLabel'] = df['itemLabel'].apply(lambda x: make_clickable(x))
+
+        return df
     else:
         return None
+
 
 
 if __name__ == "__main__":

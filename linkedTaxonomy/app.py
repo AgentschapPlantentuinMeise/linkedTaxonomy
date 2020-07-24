@@ -13,13 +13,17 @@ import protologue
 import type_specimen
 import index
 
+import base64
+from io import BytesIO
+from matplotlib.figure import Figure
+
 app = Flask(__name__)
 
 @app.route('/')
 def home(table=None):
     df = wikidata.list_wd()
     print(df.to_html(classes='data', header='true', max_rows=10))
-    return render_template('home.html', tables=[df.to_html(classes='data', header=True, index=False)])
+    return render_template('home.html', tables=[df.to_html(classes='data', header=True, index=False, escape=False)])
 
 @app.route('/<genus>/<species>')
 def taxon(genus=None, species=None):
@@ -35,6 +39,8 @@ def taxon(genus=None, species=None):
     print(taxonNameFull)
     taxon = type_specimen.get_taxon_key(taxonNameFull)
     print(taxon)
+    # get all the type specimen
+    # Holotypes
     try:
         holotypes = type_specimen.get_types(taxon['taxonKey'],'Holotype')
         print(holotypes)
@@ -42,6 +48,61 @@ def taxon(genus=None, species=None):
         holotypes = None
         print('No Holotype found')
 
+    # Isotypes
+    try:
+        isotypes = type_specimen.get_types(taxon['taxonKey'],'Isotype')
+    except TypeError:
+        isotypes = None
+
+    # Paratypes
+    try:
+        paratypes = type_specimen.get_types(taxon['taxonKey'],'Paratype')
+    except TypeError:
+        paratypes = None
+
+    # Syntypes
+    try:
+        syntypes = type_specimen.get_types(taxon['taxonKey'],'Syntype')
+    except TypeError:
+        syntypes = None
+
+    # Lectotypes
+    try:
+        lectotypes = type_specimen.get_types(taxon['taxonKey'],'Lectotype')
+    except TypeError:
+        lectotypes = None
+
+    # Isolectotypes
+    try:
+        isolectotypes = type_specimen.get_types(taxon['taxonKey'],'Isolectotype')
+    except TypeError:
+        isolectotypes = None
+
+    # Neotypes
+    try:
+        neotypes = type_specimen.get_types(taxon['taxonKey'],'Neotype')
+    except TypeError:
+        neotypes = None
+    
+    # Isoneotypes
+    try:
+        isoneotypes = type_specimen.get_types(taxon['taxonKey'],'Isoneotype')
+    except TypeError:
+        isoneotypes = None
+    
+    # Epitypes
+    try:
+        epitypes = type_specimen.get_types(taxon['taxonKey'],'Epitype')
+    except TypeError:
+        epitypes = None
+   
+    # Types
+    try:
+        types = type_specimen.get_types(taxon['taxonKey'],'Type')
+    except TypeError:
+        types = None
+    
+    
     # get synonyms
     synonyms = type_specimen.get_synonyms(genus,species)
     
@@ -82,9 +143,9 @@ def taxon(genus=None, species=None):
         print(collections_p)
     
     
-    return render_template('taxon.html', genus=genus, species=species, image_list=image_list)
+    return render_template('taxon.html', genus=genus, species=species, synonyms=synonyms, image_list=image_list)
 
 
 if __name__ == '__main__':
 
-     app.run(port=5000,debug=True)
+    app.run(port=5000,debug=True)
