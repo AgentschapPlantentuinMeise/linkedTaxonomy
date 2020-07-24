@@ -4,6 +4,7 @@ sys.path.append('./scripts/')
 from flask import render_template
 
 from flask import Flask, url_for
+from flask import Response, make_response
 from markupsafe import escape
 import wikidata
 import plazi
@@ -12,10 +13,13 @@ import html
 import protologue
 import type_specimen
 import index
+import mpld3
 
 import base64
 from io import BytesIO
 from matplotlib.figure import Figure
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 
@@ -149,17 +153,19 @@ def taxon(genus=None, species=None):
         type_numbers['Isotype'] = len(isotypes)
         type_numbers['Lectotype'] = len(lectotypes)
         type_numbers['Paratype'] = len(paratypes)
-        
-        # create timeline of holotypes
-        plot = type_specimen.plot_timeline(holotypes)
-        buf = BytesIO()
-        plot.savefig(buf, format="png")
-        data = base64.b64encode(buf.getbuffer()).decode("ascii")
+       
+        # plot the timeline of holotypes
+        fig = type_specimen.plot_timeline(holotypes)
+        pngImage = BytesIO()
+        fig.savefig(pngImage, format='png')
+
+        pngImageB64String = "data:image/png;base64,"
+        pngImageB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
 
         # checks on nomenclature
         rules_check = {}
         
-        return render_template('taxon.html', genus=genus, species=species, data=data, type_numbers=type_numbers, synonyms=synonyms, image_list=image_list)
+        return render_template('taxon.html', genus=genus, species=species, timeline=pngImageB64String, type_numbers=type_numbers, synonyms=synonyms, image_list=image_list)
 
 
 if __name__ == '__main__':
