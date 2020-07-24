@@ -153,14 +153,18 @@ def taxon(genus=None, species=None):
         type_numbers['Isotype'] = len(isotypes)
         type_numbers['Lectotype'] = len(lectotypes)
         type_numbers['Paratype'] = len(paratypes)
+        type_numbers['Type'] = len(types)
        
         # plot the timeline of holotypes
         fig = type_specimen.plot_timeline(holotypes)
         pngImage = BytesIO()
-        fig.savefig(pngImage, format='png')
+        if fig is not None:
+            fig.savefig(pngImage, format='png')
 
-        pngImageB64String = "data:image/png;base64,"
-        pngImageB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
+            pngImageB64String = "data:image/png;base64,"
+            pngImageB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
+        else:
+            pngImageB64String = "placeholder"
 
         # checks on nomenclature
         rules_check = {}
