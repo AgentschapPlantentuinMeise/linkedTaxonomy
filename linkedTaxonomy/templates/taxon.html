@@ -189,6 +189,14 @@ body, html {
   <h3 class="w3-center">NOMENCLATURE</h3>
   <p class="w3-center"><em>Checks on nomenclature</em></p>
   <p>Add guiding text,
+   <table>
+          {% for key, value in rules.items() %}
+          <tr>
+                  <th> {{ key }} </th>
+                  <td> {{ value }} </td>
+          </tr>
+          {% endfor %}
+  </table>
 
 
     <!-- Hide this text on small devices -->
@@ -197,8 +205,8 @@ body, html {
         dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor
         incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
     </div>
-  </div>
 
+  </div>
 
 
 <!-- Fifth Parallax Image with Portfolio Text -->

@@ -20,7 +20,6 @@ def include_images(iList):
           <div class="w3-row-padding w3-center">
             {0}
 
-        <button class="w3-button w3-padding-large w3-light-grey" style="margin-top:64px">LOAD MORE</button>
       </div>
     </div>
     """.format(test)

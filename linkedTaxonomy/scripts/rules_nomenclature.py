@@ -70,12 +70,14 @@ def check_lectotype(name, list_df):
 
     for item in rejected_types:
 
-        df = list_df[item]
-        df = df[df.scientificName == name]
-        if not df.empty:
-            result[item] = Evaluation.NOT_OK
-        else: 
-            result[item] = Evaluation.OK
+        try:
+            names = list_df[item].scientificName.tolist()
+            if name in names:
+                result[item] = Evaluation.NOT_OK
+            else: 
+                result[item] = Evaluation.OK
+        except AttributeError:
+            result[item] = Evaluation.TO_BE_CHECKED
 
     return result
 

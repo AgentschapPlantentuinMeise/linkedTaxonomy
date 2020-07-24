@@ -6,6 +6,7 @@ from flask import render_template
 from flask import Flask, url_for
 from flask import Response, make_response
 from markupsafe import escape
+from datetime import date
 import wikidata
 import plazi
 import lt_html
@@ -13,7 +14,7 @@ import html
 import protologue
 import type_specimen
 import index
-import mpld3
+import rules_nomenclature
 
 import base64
 from io import BytesIO
@@ -33,7 +34,7 @@ def home(table=None):
 def taxon(genus=None, species=None):
 
     # list of types to consider
-    types = types_list = ['Holotype', 'Isotype', 
+    types = ['Holotype', 'Isotype', 
             'Paratype', 'Syntype', 'Lectotype', 'Isolectotype', 
             'Neotype', 'Isoneotype', 'Epitype', 'Type']
     
@@ -44,68 +45,11 @@ def taxon(genus=None, species=None):
     taxon = type_specimen.get_taxon_key(taxonNameFull)
     print(taxon)
     # get all the type specimen
-    # Holotypes
     try:
-        holotypes = type_specimen.get_types(taxon['taxonKey'],'Holotype')
-        print(holotypes)
+        status, types_list = rules_nomenclature.get_specimen(genus, species)
     except TypeError:
-        holotypes = None
-        print('No Holotype found')
+        types_list = None
 
-    # Isotypes
-    try:
-        isotypes = type_specimen.get_types(taxon['taxonKey'],'Isotype')
-    except TypeError:
-        isotypes = None
-
-    # Paratypes
-    try:
-        paratypes = type_specimen.get_types(taxon['taxonKey'],'Paratype')
-    except TypeError:
-        paratypes = None
-
-    # Syntypes
-    try:
-        syntypes = type_specimen.get_types(taxon['taxonKey'],'Syntype')
-    except TypeError:
-        syntypes = None
-
-    # Lectotypes
-    try:
-        lectotypes = type_specimen.get_types(taxon['taxonKey'],'Lectotype')
-    except TypeError:
-        lectotypes = None
-
-    # Isolectotypes
-    try:
-        isolectotypes = type_specimen.get_types(taxon['taxonKey'],'Isolectotype')
-    except TypeError:
-        isolectotypes = None
-
-    # Neotypes
-    try:
-        neotypes = type_specimen.get_types(taxon['taxonKey'],'Neotype')
-    except TypeError:
-        neotypes = None
-    
-    # Isoneotypes
-    try:
-        isoneotypes = type_specimen.get_types(taxon['taxonKey'],'Isoneotype')
-    except TypeError:
-        isoneotypes = None
-    
-    # Epitypes
-    try:
-        epitypes = type_specimen.get_types(taxon['taxonKey'],'Epitype')
-    except TypeError:
-        epitypes = None
-   
-    # Types
-    try:
-        types = type_specimen.get_types(taxon['taxonKey'],'Type')
-    except TypeError:
-        types = None
-    
     
     # get synonyms
     synonyms = type_specimen.get_synonyms(genus,species)
@@ -139,24 +83,73 @@ def taxon(genus=None, species=None):
         if t is not None:
             type_information.extend(t)
 
+    treatmentsHaveLectotype = False
 
     image_list = lt_html.include_images(images)
     for item in type_information:
+        if 'lectotype' in item.lower():
+            treatmentsHaveLectotype = True
         date_p, collections_p = protologue.find_collections(item)
-        print(date_p)
-        print(collections_p)
-    
-    if holotypes is not None:
+        dates_list = []
+        try:
+            for date in date_p:
+                if date.year > 1000 and date < date.today():
+                    dates_list.append(date)
+        except TypeError:
+            dates_list = []
 
+        print(dates_list)
+        print(collections_p)
+
+    
+    if treatmentsHaveLectotype:
+        
         type_numbers = {}
-        type_numbers['Holotype'] = len(holotypes)
-        type_numbers['Isotype'] = len(isotypes)
-        type_numbers['Lectotype'] = len(lectotypes)
-        type_numbers['Paratype'] = len(paratypes)
-        type_numbers['Type'] = len(types)
+        type_numbers['Holotype'] = len(types_list['Holotype'])
+        type_numbers['Isotype'] = len(types_list['Isotype'])
+        type_numbers['Lectotype'] = len(types_list['Lectotype'])
+        type_numbers['Paratype'] = len(types_list['Paratype'])
+        type_numbers['Type'] = len(types_list['Type'])
+
+        # If Holotypes exist for names, plot the holotypes
+        fig = type_specimen.plot_timeline(types_list['Holotype'])
+        pngImage = BytesIO()
+        if fig is not None:
+            fig.savefig(pngImage, format='png')
+
+            pngImageB64String = "data:image/png;base64,"
+            pngImageB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
+        else:
+            pngImageB64String = None
+
+        
+        # checks on nomenclature
+        rules_check = {}
+        rules_check['Unique Holotype per name'] = rules_nomenclature.check_unique_holotype(types_list['Holotype'])
+        for name in types_list['Lectotype'].scientificName:
+            rule = rules_nomenclature.check_lectotype(name, types_list)
+            for t,r in rule.items():
+                check_str = 'No ' + t + ' for name: ' + name
+                rules_check[check_str] = r
+
+        print(rules_check)
+
+
+        return render_template('taxon.html', genus=genus, species=species, timeline=pngImageB64String, type_numbers=type_numbers, synonyms=synonyms, image_list=image_list, rules=rules_check)
+
+    
+    else:
+        
+        type_numbers = {}
+        type_numbers['Holotype'] = len(types_list['Holotype'])
+        type_numbers['Isotype'] = len(types_list['Isotype'])
+        type_numbers['Lectotype'] = len(types_list['Lectotype'])
+        type_numbers['Paratype'] = len(types_list['Paratype'])
+        type_numbers['Type'] = len(types_list['Type'])
+
        
         # plot the timeline of holotypes
-        fig = type_specimen.plot_timeline(holotypes)
+        fig = type_specimen.plot_timeline(types_list['Holotype'])
         pngImage = BytesIO()
         if fig is not None:
             fig.savefig(pngImage, format='png')
@@ -168,8 +161,11 @@ def taxon(genus=None, species=None):
 
         # checks on nomenclature
         rules_check = {}
+        rules_check['Unique Holotype per name'] = rules_nomenclature.check_unique_holotype(types_list['Holotype'])
         
-        return render_template('taxon.html', genus=genus, species=species, timeline=pngImageB64String, type_numbers=type_numbers, synonyms=synonyms, image_list=image_list)
+        
+        return render_template('taxon.html', genus=genus, species=species, timeline=pngImageB64String, type_numbers=type_numbers, synonyms=synonyms, image_list=image_list, rules=rules_check)
+
 
 
 if __name__ == '__main__':
