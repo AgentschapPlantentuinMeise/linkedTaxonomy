@@ -12,7 +12,7 @@ def include_images(iList):
             </div>""".format(test,image)
 
 
-    message = """<div class="w3-content w3-container w3-padding-64" id="portfolio">
+    message = """<div class="w3-content w3-container w3-padding-64" id="images">
         <h3 class="w3-center">IMAGES</h3>
             <p class="w3-center"><em>Here are some images.<br> Click on the images to make them bigger</em></p><br>
 
