@@ -142,8 +142,24 @@ def taxon(genus=None, species=None):
         print(date_p)
         print(collections_p)
     
-    
-    return render_template('taxon.html', genus=genus, species=species, synonyms=synonyms, image_list=image_list)
+    if holotypes is not None:
+
+        type_numbers = {}
+        type_numbers['Holotype'] = len(holotypes)
+        type_numbers['Isotype'] = len(isotypes)
+        type_numbers['Lectotype'] = len(lectotypes)
+        type_numbers['Paratype'] = len(paratypes)
+        
+        # create timeline of holotypes
+        plot = type_specimen.plot_timeline(holotypes)
+        buf = BytesIO()
+        plot.savefig(buf, format="png")
+        data = base64.b64encode(buf.getbuffer()).decode("ascii")
+
+        # checks on nomenclature
+        rules_check = {}
+        
+        return render_template('taxon.html', genus=genus, species=species, data=data, type_numbers=type_numbers, synonyms=synonyms, image_list=image_list)
 
 
 if __name__ == '__main__':
