@@ -18,8 +18,11 @@ class Evaluation(Enum):
 def check_unique_holotype(df):
 
     result = Evaluation.NOT_OK
-    if len(df.scientificName) == len(df.scientificName.unique()):
+    try:
+        if len(df.scientificName) == len(df.scientificName.unique()):
             result = Evaluation.OK
+    except AttributeError:
+        result = Evaluation.TO_BE_CHECKED
 
     return result
 

@@ -50,6 +50,18 @@ def taxon(genus=None, species=None):
     except TypeError:
         types_list = None
 
+    # create tables for the specimen
+    holotype_table = lt_html.make_specimen_table(types_list['Holotype'])
+    isotype_table = lt_html.make_specimen_table(types_list['Isotype'])
+    paratype_table = lt_html.make_specimen_table(types_list['Paratype'])
+    syntype_table = lt_html.make_specimen_table(types_list['Syntype'])
+    lectotype_table = lt_html.make_specimen_table(types_list['Lectotype'])
+    isolectotype_table = lt_html.make_specimen_table(types_list['Isolectotype'])
+    neotype_table = lt_html.make_specimen_table(types_list['Neotype'])
+    isoneotype_table = lt_html.make_specimen_table(types_list['Isoneotype'])
+    epitype_table = lt_html.make_specimen_table(types_list['Epitype'])
+    type_table = lt_html.make_specimen_table(types_list['Type'])
+
     
     # get synonyms
     synonyms = type_specimen.get_synonyms(genus,species)
@@ -135,7 +147,7 @@ def taxon(genus=None, species=None):
         print(rules_check)
 
 
-        return render_template('taxon.html', genus=genus, species=species, timeline=pngImageB64String, type_numbers=type_numbers, synonyms=synonyms, image_list=image_list, rules=rules_check)
+        return render_template('taxon.html', genus=genus, species=species, timeline=pngImageB64String, type_numbers=type_numbers, synonyms=synonyms, image_list=image_list, rules=rules_check, holotype_table=holotype_table, isotype_table=[isotype_table], paratype_table=[paratype_table], neotype_table=[neotype_table], lectotype_table=[lectotype_table], type_table=[type_table])
 
     
     else:
@@ -164,7 +176,7 @@ def taxon(genus=None, species=None):
         rules_check['Unique Holotype per name'] = rules_nomenclature.check_unique_holotype(types_list['Holotype'])
         
         
-        return render_template('taxon.html', genus=genus, species=species, timeline=pngImageB64String, type_numbers=type_numbers, synonyms=synonyms, image_list=image_list, rules=rules_check)
+        return render_template('taxon.html', genus=genus, species=species, timeline=pngImageB64String, type_numbers=type_numbers, synonyms=synonyms, image_list=image_list, rules=rules_check, holotype_table=[holotype_table], isotype_table=[isotype_table], paratype_table=[paratype_table], neotype_table=[neotype_table], lectotype_table=[lectotype_table], type_table=[type_table])
 
 
 

@@ -1,3 +1,26 @@
+import pandas as pd
+import json
+from pandas.io.json import json_normalize
+
+def make_gbif_specimen_link(gbifID):
+
+    url = '<a target="_blank" href="https://www.gbif.org/occurrence/{0}">{0}</a>'.format(gbifID)
+
+    return url
+
+
+def make_specimen_table(df):
+
+    columns = ['gbifID', 'scientificName', 'recordedBy', 'eventDate', 'collectionCode', 'institutionCode', 'countryCode', 'recordNumber']
+    
+    sdf = df.reindex(columns=columns)
+    sdf['gbifID'] = sdf['gbifID'].apply(lambda x: make_gbif_specimen_link(x))
+
+    message = sdf.to_html(classes='data', header=True, index=False, escape=False)
+
+    return message
+
+
 
 def include_images(iList):
     
