@@ -30,17 +30,21 @@ def check_date_isotypes(name, date, df):
 
     result = Evaluation.OK
     message = ''
+    date = datetime.strptime(date,'%Y-%m-%dT%H:%M:%S')
+    print(date)
 
     df = df[df.scientificName == name]
 
     if not df.empty:
         for isodate in df.eventDate:
             isodate_obj = datetime.strptime(isodate,'%Y-%m-%dT%H:%M:%S')
-            if isodate != date:
-                result = Evaluation.NOT_OK
-            elif isodate.year == date.year:
+            if isodate_obj == date:
+                result = Evaluation.OK
+            elif isodate_obj.year == date.year:
                 result = Evaluation.TO_BE_CHECKED
                 message = 'Specimens are dating from the same year, please check'
+            else:
+                result = Evaluation.NOT_OK
     else:
         result = Evaluation.TO_BE_CHECKED
         message = 'No information on isotypes of this name'

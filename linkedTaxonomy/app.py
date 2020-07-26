@@ -116,7 +116,7 @@ def taxon(genus=None, species=None):
         dates_tot.extend(dates_list)
         collections_tot.extend(collections_p)
 
-    cdf = index.get_collectionsList(collections_tot)
+    cdf = index.get_collectionsList(set(collections_tot))
     collections_table = cdf.to_html(classes='data', header=True, index=False, escape=False)
 
     
@@ -149,6 +149,17 @@ def taxon(genus=None, species=None):
             for t,r in rule.items():
                 check_str = 'No ' + t + ' for name: ' + name
                 rules_check[check_str] = r
+        if len(types_list['Isotype']) > 0:
+                for name in types_list['Holotype'].scientificName:
+                    check_str = 'Isotypes of ' + name + ' have the same date'
+                    for i, row in types_list['Holotype'].iterrows():
+                        if row.scientificName == name:
+                            try:
+                                date = row.eventDate
+                                result, message = rules_nomenclature.check_date_isotypes(name, date, types_list['Isotype'])
+                                rules_check[check_str] = result
+                            except Exception:
+                                rules_check[check_str] = "Evaluation.TO_BE_CHECKED"
 
         print(rules_check)
 
@@ -180,6 +191,17 @@ def taxon(genus=None, species=None):
         # checks on nomenclature
         rules_check = {}
         rules_check['Unique Holotype per name'] = rules_nomenclature.check_unique_holotype(types_list['Holotype'])
+        if len(types_list['Isotype']) > 0:
+                for name in types_list['Holotype'].scientificName:
+                    check_str = 'Isotypes of ' + name + ' have the same date'
+                    for i, row in types_list['Holotype'].iterrows():
+                        if row.scientificName == name:
+                            try:
+                                date = row.eventDate
+                                result, message = rules_nomenclature.check_date_isotypes(name, date, types_list['Isotype'])
+                                rules_check[check_str] = result
+                            except Exception:
+                                rules_check[check_str] = "Evaluation.TO_BE_CHECKED"
         
         
         return render_template('taxon.html', genus=genus, species=species, timeline=pngImageB64String, type_numbers=type_numbers, synonyms=synonyms, treatments=treatments, image_list=image_list, type_information=type_information, rules=rules_check, collections_table=[collections_table], holotype_table=[holotype_table], isotype_table=[isotype_table], paratype_table=[paratype_table], neotype_table=[neotype_table], lectotype_table=[lectotype_table], type_table=[type_table])
