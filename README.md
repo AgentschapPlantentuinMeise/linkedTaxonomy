@@ -19,7 +19,7 @@ In order to reconstruct the information on a scientific name, we use the differe
 * GBIF API: nomeclatural type specimens and other related specimens
 * PLAZI SPARQL endpoint: to retreive information on the scientific name from the protologue, get the collection identifiers
 * Index Herbariorum: from the collection identifiers, look for the collections mentioned in the protologue
-* IPNI/POWO: to look for synonyms
+* IPNI/POWO: to look for synonyms. Integration of their services is done through the PyKew Python package [3].
 
 ### Workflow
 ![Design diagram](./linkedTaxonomy.jpg)
@@ -36,11 +36,15 @@ By plotting the holotype specimens on a timeline, it is possible to display the 
 
 The SPARQL endpoint of the Plazi Treatment Bank allows searching on dwc:genus and dwc:species (i.e. the epithet). As a result from the query, the defining and augmenting treatments can be retrieved. Using the persistent identifier of the treatment, a request can be performed to get the content of the treatment.
 From this, the date of publication can be retrieved. By parsing the paragraph of the treatment that refers to the type specimens, the holding collections can be found (using the Index Herbariorum API).
+To have a complete overview on the treatments, the same search is performed on the different synonyms of a taxon. This is achieved by using the IPNI and POWO databases, to derive a list of synonyms.
 
 #### Step 3: nomenclatural rules
 
-* apply rules of nomenclature
-TO DO: describe time evolution. This should be taken in consideration, since names are given at different times.
+Apply the rules of nomenclature that are defined in the next section.
+
+#### Step 4: find related specimens
+
+Based on the date, taxon and collector of the specimens that are already found, a search using the GBIF API is done to build a list of possible related specimen.
 
 ### Rules of nomenclature
 The rules of nomenclature are defined in `scripts\rules_nomenclature.py`. In this version of the application, the focus is solely on botany. This is the first set of functions to be adapted when expanding to other branches of biology.
@@ -81,6 +85,8 @@ This is a first version of the application, and many improvements and extentions
 * Implement a logic to take the liste of 'Type' specimen and discover the kind of type the specimen could/should be
 * The interface with the Biodiversity Heritage Library (BHL) is implemented in the scripts, but is not yet integrated in the application
 * Better integration of the information that can be extracted from Wikidata
+* Improve the search for related specimens
+* Output of the application in JSON/JSON-LD
 
 ## Structure of the repository
 
@@ -132,7 +138,7 @@ In order to start the application, go to the folder `\linkedTaxonomy` and run:
 ```bash 
 python3 app.py
 ```
-This will start a development server running on `http:\\localhost:5000`. In order to deploy this application on a server, you should setup a WSGI interface and a server (e.g. Apache)
+This will start a development server running on `http://localhost:5000`. In order to deploy this application on a server, you should setup a WSGI interface and a server (e.g. Apache)
 
 ### Usage of the application
 The home page of the application gives you a list of possible taxa extracted from Wikidata. This list is created by the following rule: all taxa with an IPNI ID and a Plazi ID. An extra filter is applied which excludes results with a ZooBank ID, since these treatments are often not accesible. The namese are clickable and start the actual application. However, the application works for other taxa as well.
@@ -146,4 +152,16 @@ Carefull: the syntax is case sensitive. The genus should always start with a cap
 
 
 ## References
-To be added
+[1] GBIF API
+[2] Plazi SPARQL endpoint
+[3] https://pypi.org/project/pykew/
+[4]
+
+## Abbreviations
+| Acronym       | Full Name                                |
+| ------------- |------------------------------------------|
+| GBIF          | Global Biodiversity Information Facility |
+| IPNI          | International Plant Name Index           |
+| POWO          | Plants Of the WOrld                      |
+| API           | Application Programming Interface        |
+| BHL           | Biodiversity Heritage Library            |
