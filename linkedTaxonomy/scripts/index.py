@@ -25,7 +25,7 @@ def get_collectionsList(collectionsIDs):
     df = pd.DataFrame(columns=columns)
 
     for code in collectionsIDs:
-        if code != 'J':
+        if code != 'J': # this is a bug to be fixed Issue#2
             pdf = get_collection(code)
             if pdf is not None:
                 df = df.append(pdf, ignore_index=True)
