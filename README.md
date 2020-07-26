@@ -152,10 +152,10 @@ Carefull: the syntax is case sensitive. The genus should always start with a cap
 
 
 ## References
-[1] GBIF API
-[2] Plazi SPARQL endpoint
-[3] https://pypi.org/project/pykew/
-[4]
+[1] GBIF API  
+[2] Plazi SPARQL endpoint  
+[3] https://pypi.org/project/pykew/  
+[4]  
 
 ## Abbreviations
 | Acronym       | Full Name                                |
