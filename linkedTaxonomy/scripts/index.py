@@ -19,6 +19,19 @@ def get_collection(code):
 
         return None
 
+def get_collectionsList(collectionsIDs):
+
+    columns = ['code', 'name', 'website']
+    df = pd.DataFrame(columns=columns)
+
+    for code in collectionsIDs:
+        if code != 'J':
+            pdf = get_collection(code)
+            if pdf is not None:
+                df = df.append(pdf, ignore_index=True)
+
+    return df
+
 if __name__ == "__main__":
     import sys
     output = globals()[sys.argv[1]](sys.argv[2])

@@ -51,16 +51,17 @@ def taxon(genus=None, species=None):
         types_list = None
 
     # create tables for the specimen
-    holotype_table = lt_html.make_specimen_table(types_list['Holotype'])
-    isotype_table = lt_html.make_specimen_table(types_list['Isotype'])
-    paratype_table = lt_html.make_specimen_table(types_list['Paratype'])
-    syntype_table = lt_html.make_specimen_table(types_list['Syntype'])
-    lectotype_table = lt_html.make_specimen_table(types_list['Lectotype'])
-    isolectotype_table = lt_html.make_specimen_table(types_list['Isolectotype'])
-    neotype_table = lt_html.make_specimen_table(types_list['Neotype'])
-    isoneotype_table = lt_html.make_specimen_table(types_list['Isoneotype'])
-    epitype_table = lt_html.make_specimen_table(types_list['Epitype'])
-    type_table = lt_html.make_specimen_table(types_list['Type'])
+    if types_list is not None:
+        holotype_table = lt_html.make_specimen_table(types_list['Holotype'])
+        isotype_table = lt_html.make_specimen_table(types_list['Isotype'])
+        paratype_table = lt_html.make_specimen_table(types_list['Paratype'])
+        syntype_table = lt_html.make_specimen_table(types_list['Syntype'])
+        lectotype_table = lt_html.make_specimen_table(types_list['Lectotype'])
+        isolectotype_table = lt_html.make_specimen_table(types_list['Isolectotype'])
+        neotype_table = lt_html.make_specimen_table(types_list['Neotype'])
+        isoneotype_table = lt_html.make_specimen_table(types_list['Isoneotype'])
+        epitype_table = lt_html.make_specimen_table(types_list['Epitype'])
+        type_table = lt_html.make_specimen_table(types_list['Type'])
 
     
     # get synonyms
@@ -85,6 +86,8 @@ def taxon(genus=None, species=None):
     images = []
     publications = []
     type_information = []
+    dates_tot = []
+    collections_tot = []
 
     for treatment in treatments:
         p,f,t = plazi.get_treatment_information(treatment)
@@ -110,8 +113,11 @@ def taxon(genus=None, species=None):
         except TypeError:
             dates_list = []
 
-        print(dates_list)
-        print(collections_p)
+        dates_tot.extend(dates_list)
+        collections_tot.extend(collections_p)
+
+    cdf = index.get_collectionsList(collections_tot)
+    collections_table = cdf.to_html(classes='data', header=True, index=False, escape=False)
 
     
     if treatmentsHaveLectotype:
@@ -147,7 +153,7 @@ def taxon(genus=None, species=None):
         print(rules_check)
 
 
-        return render_template('taxon.html', genus=genus, species=species, timeline=pngImageB64String, type_numbers=type_numbers, synonyms=synonyms, image_list=image_list, rules=rules_check, holotype_table=holotype_table, isotype_table=[isotype_table], paratype_table=[paratype_table], neotype_table=[neotype_table], lectotype_table=[lectotype_table], type_table=[type_table])
+        return render_template('taxon.html', genus=genus, species=species, timeline=pngImageB64String, type_numbers=type_numbers, synonyms=synonyms, treatments=treatments, image_list=image_list, type_information=type_information, collections_table=[collections_table], rules=rules_check, holotype_table=[holotype_table], isotype_table=[isotype_table], paratype_table=[paratype_table], neotype_table=[neotype_table], lectotype_table=[lectotype_table], type_table=[type_table])
 
     
     else:
@@ -176,7 +182,7 @@ def taxon(genus=None, species=None):
         rules_check['Unique Holotype per name'] = rules_nomenclature.check_unique_holotype(types_list['Holotype'])
         
         
-        return render_template('taxon.html', genus=genus, species=species, timeline=pngImageB64String, type_numbers=type_numbers, synonyms=synonyms, image_list=image_list, rules=rules_check, holotype_table=[holotype_table], isotype_table=[isotype_table], paratype_table=[paratype_table], neotype_table=[neotype_table], lectotype_table=[lectotype_table], type_table=[type_table])
+        return render_template('taxon.html', genus=genus, species=species, timeline=pngImageB64String, type_numbers=type_numbers, synonyms=synonyms, treatments=treatments, image_list=image_list, type_information=type_information, rules=rules_check, collections_table=[collections_table], holotype_table=[holotype_table], isotype_table=[isotype_table], paratype_table=[paratype_table], neotype_table=[neotype_table], lectotype_table=[lectotype_table], type_table=[type_table])
 
 
 

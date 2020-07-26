@@ -11,10 +11,13 @@ def make_gbif_specimen_link(gbifID):
 
 def make_specimen_table(df):
 
+
     columns = ['gbifID', 'scientificName', 'recordedBy', 'eventDate', 'collectionCode', 'institutionCode', 'countryCode', 'recordNumber']
+
     
     sdf = df.reindex(columns=columns)
     sdf['gbifID'] = sdf['gbifID'].apply(lambda x: make_gbif_specimen_link(x))
+    sdf.replace('', '&nbsp;', inplace=True)
 
     message = sdf.to_html(classes='data', header=True, index=False, escape=False)
 

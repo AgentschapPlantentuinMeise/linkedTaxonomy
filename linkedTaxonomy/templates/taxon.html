@@ -193,7 +193,20 @@ tr:nth-child(even) {
   <h3 class="w3-center">TREATMENTS</h3>
   <p class="w3-center"><em>Information on treatments from PLAZI</em></p>
   <p>Add guiding text,
-
+  <h4 class="w3-center">LIST OF RELEVANT TREATMENTS</h3>
+  <p>{% for treatment in treatments %}
+  	<p><a href="{{treatment}}">{{ treatment }}</a></p> 
+  {% endfor %}
+  </p>
+  <h4 class="w3-center">INFORMATION ON SPECIMENS EXTRACTED FROM TREATMENT</h3>
+  <p>{% for info in type_information %}
+  	<p> {{ info }} </p> 
+  {% endfor %}
+  </p>
+  <h4 class="w3-center">POSSIBLE COLLECTIONS EXTRACTED FROM TREATMENT</h3>
+  <p>{% for table in collections_table %}
+  	{{ table|safe }}
+  {% endfor %}
 
   </div>
 
