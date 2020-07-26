@@ -88,6 +88,23 @@ def check_lectotype(name, list_df):
 
     return result
 
+def check_overlap_dates(dates1, dates2):
+
+    status = Evaluation.OK
+
+    dates2_obj = []
+    for date in dates2:
+        dates2_obj.append(datetime.strptime(date,'%Y-%m-%dT%H:%M:%S'))
+    
+    dset1 = set(dates1)
+    intersect = dset1.intersection(dates2_obj)
+    result_dates = list(intersect)
+
+    if len(result_dates) == 0:
+        status = Evaluation.TO_BE_CHECKED
+
+    return status, result_dates
+
 
 def get_specimen(genus,species):
 

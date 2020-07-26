@@ -95,6 +95,7 @@ tr:nth-child(even) {
     <a href="#treatment" class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-th"></i> TREATMENT INFORMATION</a>
     <a href="#images" class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-th"></i> IMAGES</a>
     <a href="#nomenclature" class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-th"></i> NOMENCLATURAL RULES</a>
+    <a href="#related" class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-th"></i> RELATED SPECIMENS</a>
     <a href="#contact" class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-envelope"></i> CONTACT</a>
     <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-hover-red">
       <i class="fa fa-search"></i>
@@ -107,6 +108,7 @@ tr:nth-child(even) {
     <a href="#treatment" class="w3-bar-item w3-button" onclick="toggleFunction()">TREATMENT INFORMATION</a>
     <a href="#images" class="w3-bar-item w3-button" onclick="toggleFunction()">IMAGES</a>
     <a href="#nomenclature" class="w3-bar-item w3-button" onclick="toggleFunction()">NOMENCLATURAL RULES</a>
+    <a href="#related" class="w3-bar-item w3-button" onclick="toggleFunction()">RELATED SPECIMENS</a>
     <a href="#contact" class="w3-bar-item w3-button" onclick="toggleFunction()">CONTACT</a>
     <a href="#" class="w3-bar-item w3-button">SEARCH</a>
   </div>
@@ -256,6 +258,24 @@ tr:nth-child(even) {
 
   </div>
 
+<!-- Second Parallax Image with Portfolio Text -->
+<div class="bgimg-3 w3-display-container w3-opacity-min">
+  <div class="w3-display-middle">
+    <span class="w3-xxlarge w3-text-white w3-wide">RELATED SPECIMENS</span>
+  </div>
+</div>
+
+<!-- Container (Portfolio Section) -->
+<div class="w3-content w3-container w3-padding-64" id="related">
+  <h3 class="w3-center">RELATED SPECIMENS</h3>
+  <p class="w3-center"><em>Specimen that could be related</em></p>
+  <p>
+  <h4 class="w3-center">POSSIBLE COLLECTIONS EXTRACTED FROM TREATMENT</h4>
+  <p>{% for table in related_table %}
+  	{{ table|safe }}
+  {% endfor %}
+
+  </div>
 
 <!-- Fifth Parallax Image with Portfolio Text -->
 <div class="bgimg-5 w3-display-container w3-opacity-min">

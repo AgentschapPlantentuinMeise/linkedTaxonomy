@@ -116,6 +116,7 @@ def taxon(genus=None, species=None):
         dates_tot.extend(dates_list)
         collections_tot.extend(collections_p)
 
+    print(dates_tot)
     cdf = index.get_collectionsList(set(collections_tot))
     collections_table = cdf.to_html(classes='data', header=True, index=False, escape=False)
 
@@ -144,12 +145,15 @@ def taxon(genus=None, species=None):
         # checks on nomenclature
         rules_check = {}
         rules_check['Unique Holotype per name'] = rules_nomenclature.check_unique_holotype(types_list['Holotype'])
-        for name in types_list['Lectotype'].scientificName:
-            rule = rules_nomenclature.check_lectotype(name, types_list)
-            for t,r in rule.items():
-                check_str = 'No ' + t + ' for name: ' + name
-                rules_check[check_str] = r
-        if len(types_list['Isotype']) > 0:
+        hdf = types_list['Holotype']
+        ldf = types_list['Lectotype']
+        if not ldf.empty:
+            for name in types_list['Lectotype'].scientificName:
+                rule = rules_nomenclature.check_lectotype(name, types_list)
+                for t,r in rule.items():
+                    check_str = 'No ' + t + ' for name: ' + name
+                    rules_check[check_str] = r
+        if len(types_list['Isotype']) > 0 and not hdf.empty:
                 for name in types_list['Holotype'].scientificName:
                     check_str = 'Isotypes of ' + name + ' have the same date'
                     for i, row in types_list['Holotype'].iterrows():
@@ -161,10 +165,43 @@ def taxon(genus=None, species=None):
                             except Exception:
                                 rules_check[check_str] = "Evaluation.TO_BE_CHECKED"
 
+        # compare the dates between treatment and specimens
+        if len(dates_tot) > 0:
+            dates_spec = []
+            country_spec = []
+            for stype in types:
+                try:
+                    dates_tmp = types_list[stype].eventDate.to_list()
+                    dates_spec.extend(dates_tmp)
+                    country_tmp = types_list[stype].countryCode.to_list()
+                    country_spec.extend(country_tmp)
+                except AttributeError:
+                    pass
+            s, r = rules_nomenclature.check_overlap_dates(dates_tot,dates_spec)
+            rules_check['Dates matching between specimens and treatments'] = s
+            print(r)
+            country_spec = list(country_spec)
+            print(country_spec)
+        else:
+            r = []
+
         print(rules_check)
 
+        # search for related specimen
 
-        return render_template('taxon.html', genus=genus, species=species, timeline=pngImageB64String, type_numbers=type_numbers, synonyms=synonyms, treatments=treatments, image_list=image_list, type_information=type_information, collections_table=[collections_table], rules=rules_check, holotype_table=[holotype_table], isotype_table=[isotype_table], paratype_table=[paratype_table], neotype_table=[neotype_table], lectotype_table=[lectotype_table], type_table=[type_table])
+        if len(r) == 1 and len(country_spec) > 0:
+            speciesKey = taxon['speciesKey']
+            year = r[0].year
+            month = r[0].month
+            countryCode = country_spec[0]
+            related_specimen = type_specimen.get_related_specimen(speciesKey=speciesKey,year=year,month=month,countryCode=countryCode)
+            related_table = lt_html.make_specimen_table(related_specimen)
+        else:
+            related_table = None
+
+
+
+        return render_template('taxon.html', genus=genus, species=species, timeline=pngImageB64String, type_numbers=type_numbers, synonyms=synonyms, treatments=treatments, image_list=image_list, type_information=type_information, collections_table=[collections_table], rules=rules_check, holotype_table=[holotype_table], isotype_table=[isotype_table], paratype_table=[paratype_table], neotype_table=[neotype_table], lectotype_table=[lectotype_table], type_table=[type_table], related_table=[related_table])
 
     
     else:
@@ -190,8 +227,10 @@ def taxon(genus=None, species=None):
 
         # checks on nomenclature
         rules_check = {}
-        rules_check['Unique Holotype per name'] = rules_nomenclature.check_unique_holotype(types_list['Holotype'])
-        if len(types_list['Isotype']) > 0:
+        hdf = types_list['Holotype'].copy()
+        print(hdf)
+        rules_check['Unique Holotype per name'] = rules_nomenclature.check_unique_holotype(hdf)
+        if len(types_list['Isotype']) > 0 and not hdf.empty:
                 for name in types_list['Holotype'].scientificName:
                     check_str = 'Isotypes of ' + name + ' have the same date'
                     for i, row in types_list['Holotype'].iterrows():
@@ -202,9 +241,40 @@ def taxon(genus=None, species=None):
                                 rules_check[check_str] = result
                             except Exception:
                                 rules_check[check_str] = "Evaluation.TO_BE_CHECKED"
+        # compare the dates between treatment and specimens
+        if len(dates_tot) > 0:
+            dates_spec = []
+            country_spec = []
+            for stype in types:
+                try:
+                    dates_tmp = types_list[stype].eventDate.to_list()
+                    dates_spec.extend(dates_tmp)
+                    country_tmp = types_list[stype].countryCode.to_list()
+                    country_spec.extend(country_tmp)
+                except AttributeError:
+                    pass
+            s, r = rules_nomenclature.check_overlap_dates(dates_tot,dates_spec)
+            rules_check['Dates matching between specimens and treatments'] = s
+            print(r)
+            country_spec = list(country_spec)
+        else:
+            r = []
+        
+        # search for related specimen
+
+        if len(r) == 1 and len(country_spec) > 0:
+            speciesKey = taxon['speciesKey']
+            year = r[0].year
+            month = r[0].month
+            countryCode = country_spec[0]
+            related_specimen = type_specimen.get_related_specimen(speciesKey=speciesKey,year=year,month=month,countryCode=countryCode)
+            related_table = lt_html.make_specimen_table(related_specimen)
+        else:
+            related_table = None
+
         
         
-        return render_template('taxon.html', genus=genus, species=species, timeline=pngImageB64String, type_numbers=type_numbers, synonyms=synonyms, treatments=treatments, image_list=image_list, type_information=type_information, rules=rules_check, collections_table=[collections_table], holotype_table=[holotype_table], isotype_table=[isotype_table], paratype_table=[paratype_table], neotype_table=[neotype_table], lectotype_table=[lectotype_table], type_table=[type_table])
+        return render_template('taxon.html', genus=genus, species=species, timeline=pngImageB64String, type_numbers=type_numbers, synonyms=synonyms, treatments=treatments, image_list=image_list, type_information=type_information, rules=rules_check, collections_table=[collections_table], holotype_table=[holotype_table], isotype_table=[isotype_table], paratype_table=[paratype_table], neotype_table=[neotype_table], lectotype_table=[lectotype_table], type_table=[type_table], related_table=[related_table])
 
 
 
