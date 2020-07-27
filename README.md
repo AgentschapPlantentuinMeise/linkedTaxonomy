@@ -141,13 +141,13 @@ To start the actual appliction, the structure of the URL to pass is:
 ```
 http://localhost:5000/<Genus>/<epithet>
 ```
-Careful: the syntax is case sensitive. The genus should always start with a capital/
+Careful: the syntax is case sensitive. The genus should always start with a capital.
 
 
 
 ## References
-[1] GBIF API  
-[2] Plazi SPARQL endpoint  
+[1] GBIF API: https://www.gbif.org/developer/summary
+[2] Plazi SPARQL endpoint: https://synospecies.plazi.org/advanced
 [3] https://pypi.org/project/pykew/  
 [4]  
 
@@ -156,6 +156,6 @@ Careful: the syntax is case sensitive. The genus should always start with a capi
 | ------------- |------------------------------------------|
 | GBIF          | Global Biodiversity Information Facility |
 | IPNI          | International Plant Name Index           |
-| POWO          | Plants Of the WOrld                      |
+| POWO          | Plants Of the World Online               |
 | API           | Application Programming Interface        |
 | BHL           | Biodiversity Heritage Library            |
