@@ -145,7 +145,7 @@ Careful: the syntax is case sensitive. The genus should always start with a capi
 
 
 ## Acknowledgements
-During the time I spend on creating this application, I’m grateful to the many fruitful discussions that let to the current prototype. In particular, I want to mention here the collaborations on linked data and standards development within the Synthesys+ project (especially within Networking Action 4) [4]. Part of the idea of this application originated from a Wikidata workshop at the COST MOBILISE meeting held in Warsaw (February 2020) [5]. I want to thank the organizers for creating an inspiring environment. And last and not least, I want to thank all colleagues at Meise Botanic Garden for their contributions. In particular the biodiversity informatics team (Pieter Huybrechts, Mathias Dillen and Quentin Groom).
+During the time I spend on creating this application, I’m grateful to the many fruitful discussions that let to the current prototype. In particular, I want to mention here the collaborations on linked data and standards development within the Synthesys+ project (especially within Networking Action 4) [4]. Part of the idea of this application originated from a Wikidata workshop at the COST MOBILISE meeting held in Warsaw (February 2020) [5, 6]. I want to thank the organizers for creating an inspiring environment. And last and not least, I want to thank all colleagues at Meise Botanic Garden for their contributions. In particular the biodiversity informatics team (Pieter Huybrechts, Mathias Dillen and Quentin Groom).
 
 
 ## References
@@ -154,6 +154,7 @@ During the time I spend on creating this application, I’m grateful to the many
 [3] https://pypi.org/project/pykew/  
 [4] Synthesys+: https://www.synthesys.info/  
 [5] COST MOBILISE: https://www.mobilise-action.eu/  
+[6] https://en.wikipedia.org/wiki/Wikipedia:Meetup/Cost_MOBILISE_Wikidata_Workshop  
 
 
 ## Abbreviations
