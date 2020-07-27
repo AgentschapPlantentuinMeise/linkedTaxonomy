@@ -2,22 +2,16 @@
 Maarten Trekels - Meise Botanic Garden
 
 ## Introduction
-When an organism is formally described for the first time, it will receive a scientific Latin name. However, scientific knowledge is evolving continuously. Organisms with different names turn out to be the same and are merged into one species. Others turn out to be more diverse than first thought and are split into different species. When all of these pieces of the puzzle are put together, we speak about a taxon.
-
-It is important to notice that this is a dynamic puzzle. Every day science finds new insights in the way nature works. How we understand a taxon today can be different from what it was yesterday and how it will be tomorrow. 
-
-Crucial in the concept of a taxon are the different specimens that served as type material in the description of a scientific name. In order to have a full overview on the taxon, it is important to consider all these specimens in relation to the treatment in which they are described.
-
-When specimens are added to the Global Biodiversity Information Facility (GBIF), it is possible to indicate whether a specimen is a type specimen or not. Sometimes this information is incomplete (e.g. not specifing what kind of type it is), missing or even wrong. Therefore, we have implemented a number of checks on the rules of nomenclature in order to indicate possible issues with these specimens.
-
+One of the first jobs a taxonomist must do when revising a taxon is to find and examine the nomenclatural type material for the taxa they are researching. Nomenclatural types, together with the formal protologue, link a name to a taxon and so provide important evidence of the species concept. However, type specimens can be hard to find, they may not be labelled as types, they can be scattered across numerous collections and are variously mislabelled. Tools to streamline the searching for types would reduce the workload for taxonomists and help them to concentrate on the biological aspects of the species concept.
+The international codes for biological nomenclature clearly state the rules for type specimens. For example, there should only be one holotype, lectotype or neotype, and all plant type material should be collected at the same gathering. Furthermore, even though type specimens are some of the most important specimens in a collection their associated data can be wrong, or nomenclatural decisions in the past may have been made in error. These rules are testable, but only if you can find the specimens.
+These scripts help taxonomists find type material on GBIF and link them to the original protologues on Treatment Bank. It also uses the International Plant Names Index and Plants of the World online (http://www.plantsoftheworldonline.org/) to discover synonyms.
 In this package of scripts, we focus on botanical specimens and treatments. However the principles can be expanded to any kind of organism where the codes of nomenclature require a type specimen.
-
 
 ## Methodology
 ### Getting all the building blocks
 In order to reconstruct the information on a scientific name, we use the different available APIs
-* GBIF API: nomeclatural type specimens and other related specimens
-* PLAZI SPARQL endpoint: to retreive information on the scientific name from the protologue, get the collection identifiers
+* GBIF API: nomenclatural type specimens and other related specimens
+* PLAZI SPARQL endpoint: to retrieve information on the scientific name from the protologue, get the collection identifiers
 * Index Herbariorum: from the collection identifiers, look for the collections mentioned in the protologue
 * IPNI/POWO: to look for synonyms. Integration of their services is done through the PyKew Python package [3].
 
@@ -28,7 +22,7 @@ The application expects, as an input, the taxon name (genus + epithet). Based on
 
 #### Step 1: search for the type specimen in GBIF
 
-Using the genus and epithet, the application looks for the taxon key using the GBIF API (GBIF taxonomic backbone). Based on the taxon key, all type specimen with that key are retreived. Since the first version of this application is focussing on the botanical use-case, only 'Holotype', 'Isotype', 'Paratype', 'Syntype', 'Lectotype', 'Isolectotype', 'Neotype', 'Isoneotype', 'Epitype' and 'Type' are considered as type status.
+Using the genus and epithet, the application looks for the taxon key using the GBIF API (GBIF taxonomic backbone). Based on the taxon key, all type specimen with that key are retrieved. Since the first version of this application is focussing on the botanical use-case, only 'Holotype', 'Isotype', 'Paratype', 'Syntype', 'Lectotype', 'Isolectotype', 'Neotype', 'Isoneotype', 'Epitype' and 'Type' are considered as type status.
 
 By plotting the holotype specimens on a timeline, it is possible to display the time evolution of the species naming.
 
@@ -70,8 +64,8 @@ In order to have a better interlinking between them, these unique identifiers (e
 ### Enrichment of collections data
 This application is a demonstration on how collection data can be enriched with information on the different taxa. By linking type specimens to names and treatments, a more complete overview on a taxon is created.
 Some relative easy ways to enrich the data are:
-* collections could link type specimens to the relevant Plazi IDs
-* linking the name under which a specimen is filed with a taxonomic ID (GBIF taxonKey or IPNI ID)
+* Collections could link type specimens to the relevant Plazi IDs
+* Linking the name under which a specimen is filed with a taxonomic ID (GBIF taxonKey or IPNI ID)
 
 ### Discovering hidden treasures
 The application is demonstrating the power of discovering (possible) mistakes in the naming of specimen (by implementing a few simple nomenclatural rules). Apart from that, some type specimens are not flagged as being a type. As such, they are missing in the complete overview of a taxon. By looking at specimens that are possibly related to already known type specimen, it is possible to discover type specimens in the collections. 
@@ -123,11 +117,11 @@ The real code is contained in the 'linkedTaxonomy' folder. This folder contains 
 ## Installation and usage instructions
 
 ### Jupyter/Google Colab notebooks
-Some of the development of this application was performed in Jupyter notebooks. While all of the fuctionalities in these notebooks are transferred to the Python application, you might find it usefull to have a look at these notebooks and play around with them. Be aware that not
+Some of the development of this application was performed in Jupyter notebooks. While all of the functionalities in these notebooks are transferred to the Python application, you might find it useful to have a look at these notebooks and play around with them. Be aware that not
 
 
 ### Installation
-Make sure that Python >= 3.6 is installed on your machine. In order to install the nessesary dependencies, please run in the main folder:
+Make sure that Python >= 3.6 is installed on your machine. In order to install the necessary dependencies, please run in the main folder:
 
 ```bash
 pip3 install -r requirements.txt
@@ -141,13 +135,13 @@ python3 app.py
 This will start a development server running on `http://localhost:5000`. In order to deploy this application on a server, you should setup a WSGI interface and a server (e.g. Apache)
 
 ### Usage of the application
-The home page of the application gives you a list of possible taxa extracted from Wikidata. This list is created by the following rule: all taxa with an IPNI ID and a Plazi ID. An extra filter is applied which excludes results with a ZooBank ID, since these treatments are often not accesible. The namese are clickable and start the actual application. However, the application works for other taxa as well.
+The home page of the application gives you a list of possible taxa extracted from Wikidata. This list is created by the following rule: all taxa with an IPNI ID and a Plazi ID. An extra filter is applied which excludes results with a ZooBank ID, since these treatments are often not accessible. The names are clickable and start the actual application. However, the application works for other taxa as well.
 
 To start the actual appliction, the structure of the URL to pass is:
 ```
 http://localhost:5000/<Genus>/<epithet>
 ```
-Carefull: the syntax is case sensitive. The genus should always start with a capital/
+Careful: the syntax is case sensitive. The genus should always start with a capital/
 
 
 
