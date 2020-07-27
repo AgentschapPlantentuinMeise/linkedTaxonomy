@@ -94,7 +94,10 @@ def check_overlap_dates(dates1, dates2):
 
     dates2_obj = []
     for date in dates2:
-        dates2_obj.append(datetime.strptime(date,'%Y-%m-%dT%H:%M:%S'))
+        try:
+            dates2_obj.append(datetime.strptime(date,'%Y-%m-%dT%H:%M:%S'))
+        except TypeError:
+            pass
     
     dset1 = set(dates1)
     intersect = dset1.intersection(dates2_obj)

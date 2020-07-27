@@ -71,9 +71,6 @@ Some relative easy ways to enrich the data are:
 The application is demonstrating the power of discovering (possible) mistakes in the naming of specimen (by implementing a few simple nomenclatural rules). Apart from that, some type specimens are not flagged as being a type. As such, they are missing in the complete overview of a taxon. By looking at specimens that are possibly related to already known type specimen, it is possible to discover type specimens in the collections. 
 
 
-### Special cases discovered
-When testing the scripts, a special case was discovered. For 'Fallopia japonica' and 'Reynoutria japonica' (synonyms), the `genusKey` and `speciesKey` are the same, but on GBIF they seem to have a different `taxonKey`. This case is not catched by the application.
-
 ## Improvements of the application
 This is a first version of the application, and many improvements and extentions can be imagined. Some possible ideas are:
 * Implement a logic to take the liste of 'Type' specimen and discover the kind of type the specimen could/should be
@@ -81,6 +78,9 @@ This is a first version of the application, and many improvements and extentions
 * Better integration of the information that can be extracted from Wikidata
 * Improve the search for related specimens
 * Output of the application in JSON/JSON-LD
+
+### Special cases discovered
+When testing the scripts, a special case was discovered. For 'Fallopia japonica' and 'Reynoutria japonica' (synonyms), the `genusKey` and `speciesKey` are the same, but on GBIF they seem to have a different `taxonKey`. This case is not catched by the application.
 
 ## Structure of the repository
 
@@ -144,12 +144,17 @@ http://localhost:5000/<Genus>/<epithet>
 Careful: the syntax is case sensitive. The genus should always start with a capital.
 
 
+## Acknowledgements
+During the time I spend on creating this application, I’m grateful to the many fruitful discussions that let to the current prototype. In particular, I want to mention here the collaborations on linked data and standards development within the Synthesys+ project (especially within Networking Action 4) [4]. Part of the idea of this application originated from a Wikidata workshop at the COST MOBILISE meeting held in Warsaw (February 2020) [5]. I want to thank the organizers for creating an inspiring environment. And last and not least, I want to thank all colleagues at Meise Botanic Garden for their contributions. In particular the biodiversity informatics team (Pieter Huybrechts, Mathias Dillen and Quentin Groom).
+
 
 ## References
 [1] GBIF API: https://www.gbif.org/developer/summary  
 [2] Plazi SPARQL endpoint: https://synospecies.plazi.org/advanced  
 [3] https://pypi.org/project/pykew/  
-[4]  
+[4] Synthesys+: https://www.synthesys.info/  
+[5] COST MOBILISE: https://www.mobilise-action.eu/  
+
 
 ## Abbreviations
 | Acronym       | Full Name                                |
@@ -159,3 +164,9 @@ Careful: the syntax is case sensitive. The genus should always start with a capi
 | POWO          | Plants Of the World Online               |
 | API           | Application Programming Interface        |
 | BHL           | Biodiversity Heritage Library            |
+
+## Contact information
+Feel free to contact me or swing by for a cup of coffee!
+Maarten Trekels  
+maarten [dot] trekels [at] plantentuinmeise [dot] be
+![logo](./linkedTaxonomy/templates/pictures/Logo_MeiseBotanicGarden_rgb.jpg)
