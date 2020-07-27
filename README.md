@@ -146,8 +146,8 @@ Careful: the syntax is case sensitive. The genus should always start with a capi
 
 
 ## References
-[1] GBIF API: https://www.gbif.org/developer/summary
-[2] Plazi SPARQL endpoint: https://synospecies.plazi.org/advanced
+[1] GBIF API: https://www.gbif.org/developer/summary  
+[2] Plazi SPARQL endpoint: https://synospecies.plazi.org/advanced  
 [3] https://pypi.org/project/pykew/  
 [4]  
 
