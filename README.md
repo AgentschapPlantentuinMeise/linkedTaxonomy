@@ -45,7 +45,7 @@ The rules of nomenclature are defined in `scripts\rules_nomenclature.py`. In thi
 
 The current rules that are implemented are:
 * For each name there should be only one holotype
-* TO DO: if date of treatment known: check date specimen (only possible with defining treatments)
+* If date of treatment known: check date specimen (only possible with defining treatments)
 * isotypes should have the same date
 * check dates of the paratypes (less than or equal)
 * if there is a lectotype: neither a holotype nor neotype should exist
@@ -73,7 +73,7 @@ The application is demonstrating the power of discovering (possible) mistakes in
 
 ## Improvements of the application
 This is a first version of the application, and many improvements and extentions can be imagined. Some possible ideas are:
-* Implement a logic to take the liste of 'Type' specimen and discover the kind of type the specimen could/should be
+* Implement a logic to take the list of 'Type' specimen and discover the kind of type the specimen could/should be
 * The interface with the Biodiversity Heritage Library (BHL) is implemented in the scripts, but is not yet integrated in the application
 * Better integration of the information that can be extracted from Wikidata
 * Improve the search for related specimens
@@ -117,7 +117,7 @@ The real code is contained in the 'linkedTaxonomy' folder. This folder contains 
 ## Installation and usage instructions
 
 ### Jupyter/Google Colab notebooks
-Some of the development of this application was performed in Jupyter notebooks. While all of the functionalities in these notebooks are transferred to the Python application, you might find it useful to have a look at these notebooks and play around with them. Be aware that not
+Some of the development of this application was performed in Jupyter notebooks. While all of the functionalities in these notebooks are transferred to the Python application, you might find it useful to have a look at these notebooks and play around with them. Be aware that not all functionality of the application is available inside the notebooks.
 
 
 ### Installation
@@ -142,6 +142,18 @@ To start the actual appliction, the structure of the URL to pass is:
 http://localhost:5000/<Genus>/<epithet>
 ```
 Careful: the syntax is case sensitive. The genus should always start with a capital.
+
+### Current deployment of the tool
+
+The tool is currently deployed at http://oxalis.br.fgov.be:8100
+
+*Examples:*
+Tulearia capsaintemariensis:  
+http://oxalis.br.fgov.be:8100/Tulearia/capsaintemariensis  
+Solanum pseudosycophanta:  
+http://oxalis.br.fgov.be:8100/Solanum/pseudosycophanta  
+Oxalis corniculata:  
+http://oxalis.br.fgov.be:8100/Oxalis/corniculata  
 
 
 ## Acknowledgements
