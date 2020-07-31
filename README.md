@@ -147,7 +147,7 @@ Careful: the syntax is case sensitive. The genus should always start with a capi
 
 The tool is currently deployed at http://oxalis.br.fgov.be:8100
 
-*Examples:*
+*Examples:*  
 Tulearia capsaintemariensis:  
 http://oxalis.br.fgov.be:8100/Tulearia/capsaintemariensis  
 Solanum pseudosycophanta:  
