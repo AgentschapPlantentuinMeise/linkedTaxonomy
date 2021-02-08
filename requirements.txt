@@ -3,7 +3,7 @@ Flask==1.1.2
 Flask-Bootstrap==3.3.7.1
 flask-mwoauth==0.4.82
 html5lib==0.999999999
-httplib2==0.18.0
+httplib2==0.19.0
 matplotlib==3.3.0
 numpy==1.18.5
 pandas==1.0.4
