@@ -145,15 +145,15 @@ Careful: the syntax is case sensitive. The genus should always start with a capi
 
 ### Current deployment of the tool
 
-The tool is currently deployed at http://oxalis.br.fgov.be:8100
+The tool is currently deployed at https://linked-taxonomy.herokuapp.com/
 
 *Examples:*  
 Tulearia capsaintemariensis:  
-http://oxalis.br.fgov.be:8100/Tulearia/capsaintemariensis  
+https://linked-taxonomy.herokuapp.com/Tulearia/capsaintemariensis  
 Solanum pseudosycophanta:  
-http://oxalis.br.fgov.be:8100/Solanum/pseudosycophanta  
+https://linked-taxonomy.herokuapp.com/Solanum/pseudosycophanta  
 Oxalis corniculata:  
-http://oxalis.br.fgov.be:8100/Oxalis/corniculata  
+https://linked-taxonomy.herokuapp.com/Oxalis/corniculata  
 
 
 ## Acknowledgements
